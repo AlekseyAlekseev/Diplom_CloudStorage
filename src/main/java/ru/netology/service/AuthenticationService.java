@@ -13,6 +13,9 @@ import ru.netology.security.AuthRequest;
 import ru.netology.security.AuthResponse;
 import ru.netology.security.JWTUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class AuthenticationService {
 
@@ -21,10 +24,24 @@ public class AuthenticationService {
 
     JWTUtil jwtTokenUtil;
 
+    Map<String, String> tokenUser = new HashMap<>();
+
     @Autowired
     public AuthenticationService(AuthenticationManager authenticationManager, JWTUtil jwtTokenUtil) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
+    }
+
+    public void setTokenByUser(String login, String token) {
+        tokenUser.put(login, token);
+    }
+
+    public String getTokenByUser(String login) {
+        return tokenUser.get(login);
+    }
+
+    public void deleteTokenByUser(String login) {
+        tokenUser.remove(login);
     }
 
     public AuthResponse login(AuthRequest authRequest) {
@@ -36,6 +53,7 @@ public class AuthenticationService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username or password is incorrect", e);
         }
         String jwt = jwtTokenUtil.generateToken((UserDetails) authentication.getPrincipal());
+        setTokenByUser(authRequest.getLogin(), jwt);
         return new AuthResponse(jwt);
     }
 }

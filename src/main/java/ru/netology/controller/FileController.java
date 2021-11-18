@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.netology.entity.File;
 import ru.netology.security.AuthResponse;
+import ru.netology.service.AuthenticationService;
 import ru.netology.service.FileSearchService;
 
 import java.util.List;
@@ -15,13 +16,13 @@ import java.util.List;
 public class FileController {
 
     FileSearchService fileSearchService;
-    AuthResponse authResponse;
+    AuthenticationService authenticationService;
 
     @Autowired
-    public FileController(FileSearchService fileSearchService) {
+    public FileController(FileSearchService fileSearchService, AuthenticationService authenticationService) {
         this.fileSearchService = fileSearchService;
+        this.authenticationService = authenticationService;
     }
-
 
     @PostMapping("/file")
     public void postFile(String fileName) {
@@ -44,12 +45,7 @@ public class FileController {
     }
 
     @GetMapping("/list")
-    public List<File> getList(@JsonProperty("auth-token") String token, int limit) {
-        if (authResponse.getJwtToken().equals(token)) {
+    public List<File> getList(@RequestHeader("auth-token") String token, int limit) {
             return fileSearchService.findFileName(token, limit);
-        } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username or password is incorrect");
-        }
     }
-
 }

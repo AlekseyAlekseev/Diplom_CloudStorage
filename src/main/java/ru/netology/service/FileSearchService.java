@@ -1,6 +1,8 @@
 package ru.netology.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.netology.entity.File;
 import ru.netology.repository.FileDao;
 import ru.netology.security.JWTUtil;
@@ -19,10 +21,13 @@ public class FileSearchService {
         this.jwtUtil = jwtUtil;
     }
 
-        public List<File> findFileName(String token, int limit) {
-        String login = jwtUtil.extractUsername(token);
-        List<File> files = fileRepository.findFileByUser(login, limit);
-
-        return files;
+    public List<File> findFileName(String token, int limit) {
+        //if (authenticationService.getTokenByUser("admin").equals(token)) {
+            String login = jwtUtil.extractUsername(token);
+            //List<File> files = fileRepository.findFileByUser(login, limit);
+            return fileRepository.findFileByUser_LoginContaining(login);
+      //  } else {
+      //      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username or password is incorrect");
+      //  }
     }
 }
