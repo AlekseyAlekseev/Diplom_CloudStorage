@@ -13,17 +13,14 @@ import ru.netology.repository.UserDao;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
+    UserDao dao;
 
     @Autowired
-    private UserDao dao;
-
-//    @Autowired
-//    public CustomUserDetailsService(PasswordEncoder passwordEncoder, UserDao dao) {
-//        this.passwordEncoder = passwordEncoder;
-//        this.dao = dao;
-//    }
+    public CustomUserDetailsService(PasswordEncoder passwordEncoder, UserDao dao) {
+        this.passwordEncoder = passwordEncoder;
+        this.dao = dao;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
