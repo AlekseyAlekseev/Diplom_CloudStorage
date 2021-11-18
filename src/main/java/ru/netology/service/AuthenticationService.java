@@ -35,10 +35,7 @@ public class AuthenticationService {
         } catch (BadCredentialsException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username or password is incorrect", e);
         }
-        // при создании токена в него кладется username как Subject и список authorities как кастомный claim
-
         String jwt = jwtTokenUtil.generateToken((UserDetails) authentication.getPrincipal());
-
         return new AuthResponse(jwt);
     }
 }
