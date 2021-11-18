@@ -20,12 +20,10 @@ import java.util.List;
 public class JWTFilter extends OncePerRequestFilter {
 
     JWTUtil jwtUtil;
-    CustomUserDetailsService userDetailsService;
 
     @Autowired
-    public JWTFilter(JWTUtil jwtUtil, CustomUserDetailsService userDetailsService) {
+    public JWTFilter(JWTUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
-        this.userDetailsService = userDetailsService;
     }
 
     @Override
