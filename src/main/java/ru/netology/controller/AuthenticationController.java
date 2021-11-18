@@ -3,12 +3,10 @@ package ru.netology.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.netology.security.AuthRequest;
 import ru.netology.security.AuthResponse;
+import ru.netology.security.JWTUtil;
 import ru.netology.service.AuthenticationService;
 
 @RestController
@@ -16,10 +14,12 @@ public class AuthenticationController {
 
     AuthResponse authResponse;
     AuthenticationService authenticationService;
+    JWTUtil jwtUtil;
 
     @Autowired
-    public AuthenticationController(AuthenticationService authenticationService) {
+    public AuthenticationController(AuthenticationService authenticationService, JWTUtil jwtUtil) {
         this.authenticationService = authenticationService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
@@ -30,7 +30,7 @@ public class AuthenticationController {
 
     @PostMapping("/logout")
     public void logout(@JsonProperty("auth-token") String token) {
-        System.out.println(authResponse.getJwtToken());
-        authResponse.setJwtToken("");
+        authenticationService.deleteTokenByUser(jwtUtil.extractUsername(token));
+        System.out.println(authenticationService.getTokenByUser(token));
     }
 }

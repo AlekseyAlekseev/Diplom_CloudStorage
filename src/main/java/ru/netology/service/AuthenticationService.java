@@ -36,8 +36,8 @@ public class AuthenticationService {
         tokenUser.put(login, token);
     }
 
-    public String getTokenByUser(String login) {
-        return tokenUser.get(login);
+    public boolean getTokenByUser(String token) {
+        return tokenUser.containsValue(token);
     }
 
     public void deleteTokenByUser(String login) {

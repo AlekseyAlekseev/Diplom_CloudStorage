@@ -10,6 +10,7 @@ import ru.netology.security.AuthResponse;
 import ru.netology.service.AuthenticationService;
 import ru.netology.service.FileSearchService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,7 +46,8 @@ public class FileController {
     }
 
     @GetMapping("/list")
-    public List<File> getList(@RequestHeader("auth-token") String token, int limit) {
-            return fileSearchService.findFileName(token, limit);
+    public String getList(@RequestHeader("auth-token") String token, int limit) {
+            //return fileSearchService.findFileName(token, limit);
+        return "hello";
     }
 }
