@@ -3,6 +3,7 @@ package ru.netology.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.netology.security.AuthRequest;
 import ru.netology.security.AuthResponse;
@@ -12,7 +13,6 @@ import ru.netology.service.AuthenticationService;
 @RestController
 public class AuthenticationController {
 
-    AuthResponse authResponse;
     AuthenticationService authenticationService;
     JWTUtil jwtUtil;
 
@@ -29,8 +29,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/logout")
-    public void logout(@JsonProperty("auth-token") String token) {
+    public HttpStatus logout(@RequestHeader("auth-token") String token) {
         authenticationService.deleteTokenByUser(jwtUtil.extractUsername(token));
-        System.out.println(authenticationService.getTokenByUser(token));
+        return HttpStatus.OK;
     }
 }
