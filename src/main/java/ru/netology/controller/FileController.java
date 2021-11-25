@@ -46,8 +46,7 @@ public class FileController {
     }
 
     @GetMapping("/list")
-    public String getList(@RequestHeader("auth-token") String token, int limit) {
-            //return fileSearchService.findFileName(token, limit);
-        return "hello";
+    public List<File> getList(@RequestHeader("auth-token") String token, int limit) {
+            return fileSearchService.findFileName(token, limit);
     }
 }
